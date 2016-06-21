@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+image="${1:-$IMAGE}"
+
+while read fName; do
+  if [[ -f "${fName}" ]]; then
+    feh --no-fehbg --bg-fill "${fName}"
+    #echo "${fName}" | tee '/tmp/.wallpaper'
+    exit
+  fi
+done < "${image:-/dev/stdin}"

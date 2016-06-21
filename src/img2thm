@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+scriptDir=$(dirname `realpath -P "$0"`)
+image="${1:-$IMAGE}"
+
+while read fName; do
+  if [[ -f "${fName}" ]]; then
+    themeDir="${HOME}/.wp-themes/$(md5sum ${fName} | awk -F ' ' '{print $1}')"
+
+    if [[ -d "${themeDir}" && "${FORCE_UPDATE}" == "" ]]; then
+      echo -e "[INFO] Theme for \"${fName}\" already generated. Saved as \"${themeDir}\"\n"
+      continue
+    fi
+
+    echo -e "[INFO] Generating theme for \"${fName}\". Saving as \"${themeDir}\"\n"
+
+    mkdir -p "${themeDir}"
+
+    echo "${fName}" | "${scriptDir}/img2col" | "${scriptDir}/col2pal" "${themeDir}/palette.list"
+    cat "${themeDir}/palette.list" | "${scriptDir}/col2prv" "${themeDir}/preview.png"
+    cat "${themeDir}/palette.list" | "${scriptDir}/col2thm" "${themeDir}"
+    echo "${fName}" > "${themeDir}/wallpaper.txt"
+  fi
+done < "${image:-/dev/stdin}"

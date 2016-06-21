@@ -1,0 +1,224 @@
+#!/usr/bin/env bash
+
+while read line; do
+  themeColors=("${themeColors[@]}" $line)
+done
+
+colorList=$(printf '%s\n' "${themeColors[@]}")
+themeColors=()
+for colorName in ${colorList}; do
+  themeColors=("${themeColors[@]}" $colorName)
+done
+
+unset colorList
+
+function hex_to_term(){
+  # hextorgb.sh
+  local hexinput=`echo $1 | tr -d '#' | tr '[:lower:]' '[:upper:]'` #uppercaseing
+
+  local r=`echo $hexinput | cut -c-2`
+  local g=`echo $hexinput | cut -c3-4`
+  local b=`echo $hexinput | cut -c5-6`
+
+  echo "$r/$g/$b"
+}
+
+function create_xres(){
+  #readarray themeColors < "${COLOR_PALETTE}"
+
+  echo "! Hint: Automatically generated theme" > "${1:-$PWD}/Xresources"
+  echo "" >> "${1:-$PWD}/Xresources"
+  echo "#define base00 ${themeColors[0]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base01 ${themeColors[1]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base02 ${themeColors[2]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base03 ${themeColors[3]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base04 ${themeColors[4]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base05 ${themeColors[5]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base06 ${themeColors[6]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base07 ${themeColors[7]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base08 ${themeColors[8]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base09 ${themeColors[9]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base0A ${themeColors[10]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base0B ${themeColors[11]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base0C ${themeColors[12]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base0D ${themeColors[13]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base0E ${themeColors[14]}" >> "${1:-$PWD}/Xresources"
+  echo "#define base0F ${themeColors[15]}" >> "${1:-$PWD}/Xresources"
+  echo "" >> "${1:-$PWD}/Xresources"
+  echo "*.foreground:   base05" >> "${1:-$PWD}/Xresources"
+  echo "*.background:   base00" >> "${1:-$PWD}/Xresources"
+  echo "*.cursorColor:  base05" >> "${1:-$PWD}/Xresources"
+  echo "" >> "${1:-$PWD}/Xresources"
+  echo "*.color0:       base00" >> "${1:-$PWD}/Xresources"
+  echo "*.color1:       base08" >> "${1:-$PWD}/Xresources"
+  echo "*.color2:       base0B" >> "${1:-$PWD}/Xresources"
+  echo "*.color3:       base0A" >> "${1:-$PWD}/Xresources"
+  echo "*.color4:       base0D" >> "${1:-$PWD}/Xresources"
+  echo "*.color5:       base0E" >> "${1:-$PWD}/Xresources"
+  echo "*.color6:       base0C" >> "${1:-$PWD}/Xresources"
+  echo "*.color7:       base05" >> "${1:-$PWD}/Xresources"
+  echo "" >> "${1:-$PWD}/Xresources"
+  echo "*.color8:       base03" >> "${1:-$PWD}/Xresources"
+  echo "*.color9:       base08" >> "${1:-$PWD}/Xresources"
+  echo "*.color10:      base0B" >> "${1:-$PWD}/Xresources"
+  echo "*.color11:      base0A" >> "${1:-$PWD}/Xresources"
+  echo "*.color12:      base0D" >> "${1:-$PWD}/Xresources"
+  echo "*.color13:      base0E" >> "${1:-$PWD}/Xresources"
+  echo "*.color14:      base0C" >> "${1:-$PWD}/Xresources"
+  echo "*.color15:      base07" >> "${1:-$PWD}/Xresources"
+  echo "" >> "${1:-$PWD}/Xresources"
+  echo "! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt)" >> "${1:-$PWD}/Xresources"
+  echo "*.color16:      base09" >> "${1:-$PWD}/Xresources"
+  echo "*.color17:      base0F" >> "${1:-$PWD}/Xresources"
+  echo "*.color18:      base01" >> "${1:-$PWD}/Xresources"
+  echo "*.color19:      base02" >> "${1:-$PWD}/Xresources"
+  echo "*.color20:      base04" >> "${1:-$PWD}/Xresources"
+  echo "*.color21:      base06" >> "${1:-$PWD}/Xresources"
+  echo "" >> "${1:-$PWD}/Xresources"
+  echo '#include ".config/rofi/rofirc"' >> "${1:-$PWD}/Xresources"
+}
+
+function create_term(){
+  #readarray themeColors < "${COLOR_PALETTE}"
+
+  echo "#!/usr/bin/env bash" > "${1:-$PWD}/termcolors"
+
+  echo "color00=\"$(hex_to_term ${themeColors[0]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color01=\"$(hex_to_term ${themeColors[1]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color02=\"$(hex_to_term ${themeColors[2]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color03=\"$(hex_to_term ${themeColors[3]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color04=\"$(hex_to_term ${themeColors[4]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color05=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color06=\"$(hex_to_term ${themeColors[6]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color07=\"$(hex_to_term ${themeColors[7]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color08=\"$(hex_to_term ${themeColors[8]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color09=\"$(hex_to_term ${themeColors[1]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color10=\"$(hex_to_term ${themeColors[2]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color11=\"$(hex_to_term ${themeColors[3]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color12=\"$(hex_to_term ${themeColors[4]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color13=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color14=\"$(hex_to_term ${themeColors[6]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color15=\"$(hex_to_term ${themeColors[9]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color16=\"$(hex_to_term ${themeColors[10]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color17=\"$(hex_to_term ${themeColors[11]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color18=\"$(hex_to_term ${themeColors[12]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color19=\"$(hex_to_term ${themeColors[13]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color20=\"$(hex_to_term ${themeColors[14]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color21=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors"
+
+  echo "color_foreground=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color_background=\"$(hex_to_term ${themeColors[0]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color_cursor=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
+
+  echo 'printf_template="\033]4;%d;rgb:%s\033\\"' >> "${1:-$PWD}/termcolors"
+  echo 'printf_template_var="\033]%d;rgb:%s\033\\"' >> "${1:-$PWD}/termcolors"
+  echo 'printf_template_custom="\033]%s%s\033\\"' >> "${1:-$PWD}/termcolors"
+
+  echo 'printf $printf_template 0  $color00' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 1  $color01' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 2  $color02' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 3  $color03' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 4  $color04' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 5  $color05' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 6  $color06' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 7  $color07' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 8  $color08' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 9  $color09' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 10 $color10' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 11 $color11' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 12 $color12' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 13 $color13' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 14 $color14' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 15 $color15' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 16 $color16' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 17 $color17' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 18 $color18' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 19 $color19' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 20 $color20' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template 21 $color21' >> "${1:-$PWD}/termcolors"
+
+  echo 'printf $printf_template_var 10 $color_foreground' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template_var 11 $color_background' >> "${1:-$PWD}/termcolors"
+  echo 'printf $printf_template_custom 12 ";7"' >> "${1:-$PWD}/termcolors"
+  
+  chmod +x "${1:-$PWD}/termcolors"
+}
+
+function create_gtk(){
+
+  echo '@define-color bg_color '"${themeColors[0]}"';' > "${1:-$PWD}/gtk.css"
+  echo '@define-color fg_color '"${themeColors[15]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color base_color '"${themeColors[14]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color text_color '"${themeColors[2]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color selected_bg_color '"${themeColors[5]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color selected_fg_color '"${themeColors[13]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color tooltip_bg_color '"${themeColors[1]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color tooltip_fg_color '"${themeColors[3]}"';' >> "${1:-$PWD}/gtk.css"
+
+  
+  echo '@define-color theme_bg_color @bg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_fg_color @fg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_base_color @base_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_text_color @text_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_selected_bg_color @selected_bg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_selected_fg_color @selected_fg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_tooltip_bg_color @tooltip_bg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color theme_tooltip_fg_color @tooltip_fg_color;' >> "${1:-$PWD}/gtk.css"
+
+  
+  echo '@define-color light_shadow '"${themeColors[15]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color dark_shadow '"${themeColors[0]}"';' >> "${1:-$PWD}/gtk.css"
+
+  
+  echo '@define-color info_fg_color '"${themeColors[7]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color info_bg_color '"${themeColors[2]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color warning_fg_color '"${themeColors[9]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color warning_bg_color '"${themeColors[2]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color question_fg_color '"${themeColors[11]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color question_bg_color '"${themeColors[2]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color error_fg_color '"${themeColors[5]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color error_bg_color '"${themeColors[2]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color link_color '"${themeColors[7]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color success_color '"${themeColors[7]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color warning_color '"${themeColors[9]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color error_color '"${themeColors[5]}"';' >> "${1:-$PWD}/gtk.css"
+
+  
+  echo '@define-color menubar_bg_color @theme_bg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color menubar_fg_color @theme_fg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color toolbar_bg_color @theme_bg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color toolbar_fg_color @theme_fg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color menu_bg_color @theme_base_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color menu_fg_color @theme_text_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color panel_bg_color @theme_bg_color;' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color panel_fg_color @theme_fg_color;' >> "${1:-$PWD}/gtk.css"
+
+  echo '@define-color osd_base '"${themeColors[2]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color osd_fg '"${themeColors[13]}"';' >> "${1:-$PWD}/gtk.css"
+  echo '@define-color osd_bg alpha(@osd_base, 0.8);' >> "${1:-$PWD}/gtk.css"
+
+  echo '@import url("gtk-widgets.css");' >> "${1:-$PWD}/gtk.css"
+  echo '@import url("gtk-widgets-assets.css");' >> "${1:-$PWD}/gtk.css"
+
+  echo '[Settings]' > "${1:-$PWD}/settings.ini"
+  echo 'gtk-color-scheme = "' >> "${1:-$PWD}/settings.ini"
+  echo 'base_color:'"${themeColors[14]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'bg_color:'"${themeColors[15]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'selected_bg_color:'"${themeColors[5]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'text_color:'"${themeColors[2]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'fg_color:'"${themeColors[15]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'selected_fg_color:'"${themeColors[13]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'link_color:'"${themeColors[7]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'toolbar_bg_color:'"${themeColors[0]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'toolbar_fg_color:'"${themeColors[15]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'menubar_bg_color:'"${themeColors[0]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'menubar_fg_color:'"${themeColors[15]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'menu_bg_color:'"${themeColors[14]}"'' >> "${1:-$PWD}/settings.ini"
+  echo 'menu_fg_color:'"${themeColors[2]}"'"' >> "${1:-$PWD}/settings.ini"
+  echo 'gtk-auto-mnemonics = 1' >> "${1:-$PWD}/settings.ini"
+  echo 'gtk-visible-focus = automatic' >> "${1:-$PWD}/settings.ini"
+}
+
+create_xres ${@}
+create_term ${@}
+create_gtk ${@}

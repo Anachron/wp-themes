@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Colors to preview: Save colors into preview file
+while read color; do
+  convert -size 20x20 "xc:$color" +depth miff:-
+done | montage - -geometry +0+0 "${1:-preview.png}" < "/dev/stdin"

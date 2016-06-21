@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+scriptDir=$(dirname `realpath -P "$0"`)
+imageDir=${1:-$HOME/pictures/wallpapers/}
+
+for fName in "${imageDir}"*; do
+  echo "${fName}" | "${scriptDir}/img2thm"
+done
