@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Fix! Script will only work on this page
+website='https://wallpaperscraft.com'
+
+# Variable, change to your liking
+catalog=${1:-macro}
+folder="${HOME}/pictures/wallpapers"
+#autoChange="yes"
+
+if [[ "${catalog}" != "all" ]]; then
+  website+="/catalog"
+fi
+
+resolution=$(xrandr | grep primary | grep -o -e '[0-9]*x[0-9]*+[0-9]*+[0-9]*' | awk -F '+' '{print $1}')
+maxPage=$(curl -s "${website}/${catalog}" | grep page_select | grep -o -e "[0-9]*" | sort -r | uniq | head -n 1)
+rndPage=$(shuf -i "1-${maxPage}" -n 1)
+
+echo "Looking for wallpaper of type ${catalog} with resolution ${resolution}"
+
+if [[ "${rndPage}" -eq 1 ]]; then
+  targetPage="${website}/${catalog}"
+else
+  targetPage="${website}/${catalog}/page${rndPage}"
+fi
+
+rndWall=$(curl -s "${targetPage}" | grep -o -e '"//wallpaperscraft.com/wallpaper/.*</a>' | awk -F '"' '{print $2}' | sort -R | head -n 1 | sed 's/wallpaper/image/2')
+rndWall="https:${rndWall}_${resolution}.jpg"
+fName=$(echo "${rndWall}" | awk -F '/' '{print $5}')
+
+echo "Downloading ${fName}"
+wget -q -P "${folder}" "${rndWall}"
+
+#if [[ "${autoChange}" == "yes" ]]; then
+  #~/.config/bspwm/change_theme "${fName}"
+#fi

@@ -18,6 +18,7 @@
 - img2col: Extract 16 dominant colors out from a specific image
 - img2thm: Generate a color theme (termcolors, xresources, gtk) based on an image
 - img2wal: Set a specific image to the background wallpaper, using feh
+- web2wal: Script will automatically figure out primary screen resolution and download a wallpaper of a specific type from wallpaperscraft.com, randomly chosen.
 
 ## Notes
 - GTK color theme is not finished and not supposed to work as of yet
