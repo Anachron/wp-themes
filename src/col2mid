@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Color to middle: Extracts 8 not too light and dark colors from 16
+col2sort | tail -n +6 | head -n 8

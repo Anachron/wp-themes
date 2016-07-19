@@ -5,7 +5,7 @@ website='https://wallpaperscraft.com'
 
 # Variable, change to your liking
 catalog=${1:-macro}
-folder="${HOME}/pictures/wallpapers"
+folder="${HOME}/pictures/wallpapers/downloads"
 #autoChange="yes"
 
 if [[ "${catalog}" != "all" ]]; then
@@ -28,8 +28,12 @@ rndWall=$(curl -s "${targetPage}" | grep -o -e '"//wallpaperscraft.com/wallpaper
 rndWall="https:${rndWall}_${resolution}.jpg"
 fName=$(echo "${rndWall}" | awk -F '/' '{print $5}')
 
-echo "Downloading ${fName}"
-wget -q -P "${folder}" "${rndWall}"
+if [[ -f "${folder}/${fName}" ]]; then
+  echo "Skipping download of ${fName}: File already exists"
+else
+  echo "Downloading ${fName}"
+  wget -q -P "${folder}" "${rndWall}"
+fi
 
 #if [[ "${autoChange}" == "yes" ]]; then
   #~/.config/bspwm/change_theme "${fName}"

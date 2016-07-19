@@ -12,6 +12,10 @@ function get_colors(){
     | gawk 'match ($0, /^ *[0-9]+: \([^)]+\) (#[0-9A-F]+) .+$/, a) { print a[1] }'
 }
 
-while read line; do
-  get_colors "${line}"
-done < "${image:-/dev/stdin}"
+if [[ "${image}" != "" ]]; then
+  get_colors "${image}"
+else
+  while read fName; do
+    get_colors "${fName}"
+  done < "${image:-/dev/stdin}"
+fi

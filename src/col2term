@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+colors=($(xrdb -query | grep -E -o 'color[0-9].*' | sed 's/color//g' | sort -n |tr -d ' \t' | awk -F ':' '{print $2}'))
+
+ for i in {8..11}; do echo -en "\e[0;$((22+$i))m █ ${colors[i]} \e[0m"; done
+ echo
+
+ for i in {12..15}; do echo -en "\e[0;$((22+$i))m █ ${colors[i]} \e[0m"; done
+ echo -e "\n"
+
+#echo -e "\e[1;37m\n   Red        Orange     Yellow     Green\n ──────────────────────────────────────────\e[0m"
+ 
+ for i in {8..11}; do echo -en "\e[1;$((22+$i))m █ ${colors[i]} \e[0m"; done
+ echo
+
+#echo -e "\e[1;37m\n   Teal       Blue       Pink       Brown\n ──────────────────────────────────────────\e[0m"
+ 
+ for i in {12..15}; do echo -en "\e[1;$((22+$i))m █ ${colors[i]} \e[0m"; done
+ echo
+
+#echo -e "\e[1;37m\n   Grey80     Grey60     Grey40     Grey20\n ──────────────────────────────────────────\e[0m"
+
+echo -e "\n"
+
+exit
+
+echo -e "\e[1;37m
+ Black      Red        Green      Yellow
+ ──────────────────────────────────────────\e[0m"
+ for i in {0..3}; do echo -en "\e[$((30+$i))m █ ${colors[i]} \e[0m"; done
+ echo
+ for i in {8..11}; do echo -en "\e[1;$((22+$i))m █ ${colors[i]} \e[0m"; done
+ echo
+echo -e "\e[1;37m
+ Blue       Magenta    Cyan       White
+ ──────────────────────────────────────────\e[0m"
+ for i in {4..7}; do echo -en "\e[$((30+$i))m █ ${colors[i]} \e[0m"; done
+ echo
+ for i in {12..15}; do echo -en "\e[1;$((22+$i))m █ ${colors[i]} \e[0m"; done
+echo -e "\n"
+
+exit
+
+echo -e "\e[1;37m
+ Black      Red        Green      Yellow     Blue       Magenta    Cyan       White
+ ───────────────────────────────────────────────────────────────────────────────────────\e[0m"
+   for i in {0..7}; do echo -en "\e[$((30+$i))m █ ${colors[i]} \e[0m"; done
+   echo
+   for i in {8..15}; do echo -en "\e[1;$((22+$i))m █ ${colors[i]} \e[0m"; done
+echo -e "\n"
+
+exit
+
+printf '\e[48;5;%dm   ' {0..7}; printf '\e[0m \n'
+printf '\e[48;5;%dm   ' {8..15}; printf '\e[0m \n'

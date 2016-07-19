@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+scriptDir=$(dirname `realpath -P "$0"`)
+xFile=${1:-$HOME/.Xresources}
+colors=$(xres2col "${xFile}")
+themeDir="${HOME}/.wp-themes/$(echo "${colors}" | md5sum | awk -F ' ' '{print $1}')"
+
+if [[ -d "${themeDir}" ]] && [[ "${FORCE_UPDATE}" == "" ]]; then
+  echo -e "[INFO] Theme for \"${xFile}\" already generated. Saved as \"${themeDir}\"\n"
+  exit
+fi
+
+echo -e "[INFO] Generating theme for \"${xFile}\". Saving as \"${themeDir}\"\n"
+
+mkdir -p "${themeDir}"
+
+echo -e "${colors}" > "${themeDir}/palette.list"
+cat "${themeDir}/palette.list" | "${scriptDir}/col2prv" "${themeDir}/preview.png"
+cat "${themeDir}/palette.list" | "${scriptDir}/col2thm" "${themeDir}"

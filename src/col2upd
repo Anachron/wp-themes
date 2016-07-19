@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+
+#echo "scale=2; 55+(55/255)*75" | bc -s | awk -F '.' '{print $1}'
+#exit
+
+function getll(){
+  local r="${1}"
+  local g="${2}"
+  local b="${3}"
+
+  # http://stackoverflow.com/a/596241
+  #echo "scale=0; (${r}+${r}+${b}+${g}+${g}+${g})/6" | bc -s
+
+  echo "scale=0; (${r}+${g}+${b})/3" | bc -s
+}
+
+function maxll(){
+  local r="${1:-0}"
+  local g="${2:-0}"
+  local b="${3:-0}"
+
+  if [[ "${r}" -gt "${g}" && "${r}" -gt "${b}" ]]; then
+    #echo "RED!"
+    echo "${r}"
+  elif [[ "${g}" -gt "${r}" && "${g}" -gt "${b}" ]]; then
+    #echo "GREEN!"
+    echo "${g}"
+  elif [[ "${b}" -gt "${r}" && "${b}" -gt "${g}" ]]; then
+    #echo "BLUE!"
+    echo "${b}"
+  else
+    #echo "NONE!"
+    echo "${r}"
+  fi
+}
+
+function minll(){
+  local r="${1:-0}"
+  local g="${2:-0}"
+  local b="${3:-0}"
+
+  if [[ "${r}" -lt "${g}" && "${r}" -lt "${b}" ]]; then
+    #echo "RED!"
+    echo "${r}"
+  elif [[ "${g}" -lt "${r}" && "${g}" -lt "${b}" ]]; then
+    #echo "GREEN!"
+    echo "${g}"
+  elif [[ "${b}" -lt "${r}" && "${b}" -lt "${g}" ]]; then
+    #echo "BLUE!"
+    echo "${b}"
+  else
+    #echo "NONE!"
+    echo "${r}"
+  fi
+}
+
+# Fix lightlevel for color if too bright or too dark
+function chll(){
+  #echo "scale=2; ${4}" | bc -s
+  #exit
+
+  # TODO: Make it upgrade strongest color first, then the others.
+  # Example: Red has 235 and all colors should be loosing 53 points in total.
+  # Calculate how many of red points has to be removed compared to the others
+  local r=$(echo "scale=2; ${1}+(${1}*${4}/3/255)" | bc -s | awk -F '.' '{print $1}')
+  local g=$(echo "scale=2; ${2}+(${2}*${4}/3/255)" | bc -s | awk -F '.' '{print $1}')
+  local b=$(echo "scale=2; ${3}+(${3}*${4}/3/255)" | bc -s | awk -F '.' '{print $1}')
+
+  [[ "${r}" -lt 0 ]] && r=0
+  [[ "${g}" -lt 0 ]] && g=0
+  [[ "${b}" -lt 0 ]] && b=0
+
+  [[ "${r}" -gt 255 ]] && r=255
+  [[ "${g}" -gt 255 ]] && g=255
+  [[ "${b}" -gt 255 ]] && b=255
+
+  echo "${r} ${g} ${b}"
+}
+
+# Bound light level to a specific range
+function bndll(){
+  local r="${1}"
+  local g="${2}"
+  local b="${3}"
+
+  local curLL=$(getll "${r}" "${g}" "${b}")
+  local minCur=$(minll "${r}" "${g}" "${b}")
+  local maxCur=$(maxll "${r}" "${g}" "${b}")
+  local minLL="${4}"
+  local maxLL="${5}"
+
+  #echo "COLOR BEFORE [${r} ${g} ${b}]"
+
+  if [[ "${curLL}" -gt "${maxLL}" ]]; then
+    local change=$((${maxLL} -${maxCur}))
+    #echo "TOO HIGH,- CHANGE: ${change}"
+    echo $(chll "${r}" "${g}" "${b}" "${change}")
+  elif [[ "${curLL}" -lt "${minLL}" ]]; then
+    local change=$((${minLL} -${minCur}))
+    #echo "TOO LOW,- CHANGE: ${change}"
+    echo $(chll "${r}" "${g}" "${b}" "${change}")
+  else
+    #echo "ALL OK,- REPRINT"
+    echo "${r} ${g} ${b}"
+  fi
+}
+
+function trim_string(){
+  echo "${1}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
+}
+
+function hex2rgb(){
+  local hexcode=$(echo "${1}" | tr -d '#' | tr '[:lower:]' '[:upper:]')
+
+  for val in ${hexcode:0:2} ${hexcode:2:2} ${hexcode:4:2}; do
+    printf "%3d " "0x$val"
+  done
+}
+
+function rgb2hex(){
+  printf \#%02X%02X%02X "${1}" "${2}" "${3}"
+}
+
+hex='#52F288'
+echo "${hex}"
+
+rgb=$(hex2rgb "${hex}")
+
+echo "${rgb} LL: $(getll ${rgb})"
+maxll ${rgb}
+
+#rgb=$(chll ${rgb} -75)
+rgb=$(bndll ${rgb} 50 100)
+
+echo "${rgb} LL: $(getll ${rgb})"
+
+#hex=$(rgb2hex ${rgb})
+#echo "${hex}"
+
+# https://wiki.archlinux.org/index.php/x_resources#Terminal_colors
+# Black + DarkGrey
+# *color0:  #000000
+# *color8:  #555753
+# DarkRed + Red
+# *color1:  #ff6565
+# *color9:  #ff8d8d
+# DarkGreen + Green
+# *color2:  #93d44f
+# *color10: #c8e7a8
+# DarkYellow + Yellow
+# color3:  #eab93d
+# color11: #ffc123
+# DarkBlue + Blue
+# color4:  #204a87
+# color12: #3465a4
+# DarkMagenta + Magenta
+# color5:  #ce5c00
+# color13: #f57900
+# DarkCyan + Cyan (both not tango)
+# color6:  #89b6e2
+# color14: #46a4ff
+# LightGrey + White
+# color7:  #cccccc
+# color15: #ffffff

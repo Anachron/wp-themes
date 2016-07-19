@@ -26,8 +26,11 @@ function hex_to_term(){
 function create_xres(){
   #readarray themeColors < "${COLOR_PALETTE}"
 
+  #Black      Red        Green      Yellow     Blue       Magenta    Cyan       White
+
   echo "! Hint: Automatically generated theme" > "${1:-$PWD}/Xresources"
   echo "" >> "${1:-$PWD}/Xresources"
+
   echo "#define base00 ${themeColors[0]}" >> "${1:-$PWD}/Xresources"
   echo "#define base01 ${themeColors[1]}" >> "${1:-$PWD}/Xresources"
   echo "#define base02 ${themeColors[2]}" >> "${1:-$PWD}/Xresources"
@@ -45,10 +48,12 @@ function create_xres(){
   echo "#define base0E ${themeColors[14]}" >> "${1:-$PWD}/Xresources"
   echo "#define base0F ${themeColors[15]}" >> "${1:-$PWD}/Xresources"
   echo "" >> "${1:-$PWD}/Xresources"
-  echo "*.foreground:   base05" >> "${1:-$PWD}/Xresources"
-  echo "*.background:   base00" >> "${1:-$PWD}/Xresources"
-  echo "*.cursorColor:  base05" >> "${1:-$PWD}/Xresources"
+
+  echo "*.foreground:   base0F" >> "${1:-$PWD}/Xresources" # base05
+  echo "*.background:   base00" >> "${1:-$PWD}/Xresources" # base00
+  echo "*.cursorColor:  base0F" >> "${1:-$PWD}/Xresources" # base05
   echo "" >> "${1:-$PWD}/Xresources"
+
   echo "*.color0:       base00" >> "${1:-$PWD}/Xresources"
   echo "*.color1:       base08" >> "${1:-$PWD}/Xresources"
   echo "*.color2:       base0B" >> "${1:-$PWD}/Xresources"
@@ -57,25 +62,35 @@ function create_xres(){
   echo "*.color5:       base0E" >> "${1:-$PWD}/Xresources"
   echo "*.color6:       base0C" >> "${1:-$PWD}/Xresources"
   echo "*.color7:       base05" >> "${1:-$PWD}/Xresources"
-  echo "" >> "${1:-$PWD}/Xresources"
   echo "*.color8:       base03" >> "${1:-$PWD}/Xresources"
-  echo "*.color9:       base08" >> "${1:-$PWD}/Xresources"
-  echo "*.color10:      base0B" >> "${1:-$PWD}/Xresources"
-  echo "*.color11:      base0A" >> "${1:-$PWD}/Xresources"
-  echo "*.color12:      base0D" >> "${1:-$PWD}/Xresources"
-  echo "*.color13:      base0E" >> "${1:-$PWD}/Xresources"
-  echo "*.color14:      base0C" >> "${1:-$PWD}/Xresources"
+  echo "*.color9:       base09" >> "${1:-$PWD}/Xresources"
+  echo "*.color10:      base01" >> "${1:-$PWD}/Xresources"
+  echo "*.color11:      base02" >> "${1:-$PWD}/Xresources"
+  echo "*.color12:      base04" >> "${1:-$PWD}/Xresources"
+  echo "*.color13:      base06" >> "${1:-$PWD}/Xresources"
+  echo "*.color14:      base0F" >> "${1:-$PWD}/Xresources"
   echo "*.color15:      base07" >> "${1:-$PWD}/Xresources"
   echo "" >> "${1:-$PWD}/Xresources"
-  echo "! Note: colors beyond 15 might not be loaded (e.g., xterm, urxvt)" >> "${1:-$PWD}/Xresources"
-  echo "*.color16:      base09" >> "${1:-$PWD}/Xresources"
-  echo "*.color17:      base0F" >> "${1:-$PWD}/Xresources"
-  echo "*.color18:      base01" >> "${1:-$PWD}/Xresources"
-  echo "*.color19:      base02" >> "${1:-$PWD}/Xresources"
-  echo "*.color20:      base04" >> "${1:-$PWD}/Xresources"
-  echo "*.color21:      base06" >> "${1:-$PWD}/Xresources"
+
+  #echo "! Additional Colors" >> "${1:-$PWD}/Xresources"
+  #echo "*.color16:      base09" >> "${1:-$PWD}/Xresources"
+  #echo "*.color17:      base0F" >> "${1:-$PWD}/Xresources"
+  #echo "*.color18:      base01" >> "${1:-$PWD}/Xresources"
+  #echo "*.color19:      base02" >> "${1:-$PWD}/Xresources"
+  #echo "*.color20:      base04" >> "${1:-$PWD}/Xresources"
+  #echo "*.color21:      base06" >> "${1:-$PWD}/Xresources"
+  #echo "" >> "${1:-$PWD}/Xresources"
+
+  echo "Xft.autohint: 0" >> "${1:-$PWD}/Xresources"
+  echo "Xft.lcdfilter: lcddefault" >> "${1:-$PWD}/Xresources"
+  echo "Xft.hinting: 1" >> "${1:-$PWD}/Xresources"
+  echo "Xft.hintstyle: hintslight" >> "${1:-$PWD}/Xresources"
+  echo "Xft.antialias: 1" >> "${1:-$PWD}/Xresources"
+  echo "Xft.rgba: rgb" >> "${1:-$PWD}/Xresources"
   echo "" >> "${1:-$PWD}/Xresources"
+
   echo '#include ".config/rofi/rofirc"' >> "${1:-$PWD}/Xresources"
+  echo '#include ".config/dmenu/dmenurc"' >> "${1:-$PWD}/Xresources"
 }
 
 function create_term(){
@@ -84,31 +99,31 @@ function create_term(){
   echo "#!/usr/bin/env bash" > "${1:-$PWD}/termcolors"
 
   echo "color00=\"$(hex_to_term ${themeColors[0]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color01=\"$(hex_to_term ${themeColors[1]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color02=\"$(hex_to_term ${themeColors[2]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color03=\"$(hex_to_term ${themeColors[3]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color04=\"$(hex_to_term ${themeColors[4]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color05=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color06=\"$(hex_to_term ${themeColors[6]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color07=\"$(hex_to_term ${themeColors[7]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color08=\"$(hex_to_term ${themeColors[8]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color09=\"$(hex_to_term ${themeColors[1]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color10=\"$(hex_to_term ${themeColors[2]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color11=\"$(hex_to_term ${themeColors[3]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color12=\"$(hex_to_term ${themeColors[4]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color13=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color14=\"$(hex_to_term ${themeColors[6]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color15=\"$(hex_to_term ${themeColors[9]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color16=\"$(hex_to_term ${themeColors[10]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color17=\"$(hex_to_term ${themeColors[11]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color18=\"$(hex_to_term ${themeColors[12]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color19=\"$(hex_to_term ${themeColors[13]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color20=\"$(hex_to_term ${themeColors[14]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color21=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color01=\"$(hex_to_term ${themeColors[8]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color02=\"$(hex_to_term ${themeColors[11]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color03=\"$(hex_to_term ${themeColors[10]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color04=\"$(hex_to_term ${themeColors[13]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color05=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color06=\"$(hex_to_term ${themeColors[12]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color07=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color08=\"$(hex_to_term ${themeColors[3]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color09=\"$(hex_to_term ${themeColors[8]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color10=\"$(hex_to_term ${themeColors[11]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color11=\"$(hex_to_term ${themeColors[10]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color12=\"$(hex_to_term ${themeColors[13]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color13=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color14=\"$(hex_to_term ${themeColors[12]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color15=\"$(hex_to_term ${themeColors[7]})\"" >> "${1:-$PWD}/termcolors"
+  #echo "color16=\"$(hex_to_term ${themeColors[9]})\"" >> "${1:-$PWD}/termcolors"
+  #echo "color17=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors"
+  #echo "color18=\"$(hex_to_term ${themeColors[1]})\"" >> "${1:-$PWD}/termcolors"
+  #echo "color19=\"$(hex_to_term ${themeColors[2]})\"" >> "${1:-$PWD}/termcolors"
+  #echo "color20=\"$(hex_to_term ${themeColors[4]})\"" >> "${1:-$PWD}/termcolors"
+  #echo "color21=\"$(hex_to_term ${themeColors[6]})\"" >> "${1:-$PWD}/termcolors"
 
-  echo "color_foreground=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color_background=\"$(hex_to_term ${themeColors[0]})\"" >> "${1:-$PWD}/termcolors"
-  echo "color_cursor=\"$(hex_to_term ${themeColors[5]})\"" >> "${1:-$PWD}/termcolors"
+  echo "color_foreground=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors" # 7
+  echo "color_background=\"$(hex_to_term ${themeColors[0]})\"" >> "${1:-$PWD}/termcolors" # 1
+  echo "color_cursor=\"$(hex_to_term ${themeColors[15]})\"" >> "${1:-$PWD}/termcolors" # 7
 
   echo 'printf_template="\033]4;%d;rgb:%s\033\\"' >> "${1:-$PWD}/termcolors"
   echo 'printf_template_var="\033]%d;rgb:%s\033\\"' >> "${1:-$PWD}/termcolors"
@@ -130,12 +145,12 @@ function create_term(){
   echo 'printf $printf_template 13 $color13' >> "${1:-$PWD}/termcolors"
   echo 'printf $printf_template 14 $color14' >> "${1:-$PWD}/termcolors"
   echo 'printf $printf_template 15 $color15' >> "${1:-$PWD}/termcolors"
-  echo 'printf $printf_template 16 $color16' >> "${1:-$PWD}/termcolors"
-  echo 'printf $printf_template 17 $color17' >> "${1:-$PWD}/termcolors"
-  echo 'printf $printf_template 18 $color18' >> "${1:-$PWD}/termcolors"
-  echo 'printf $printf_template 19 $color19' >> "${1:-$PWD}/termcolors"
-  echo 'printf $printf_template 20 $color20' >> "${1:-$PWD}/termcolors"
-  echo 'printf $printf_template 21 $color21' >> "${1:-$PWD}/termcolors"
+  #echo 'printf $printf_template 16 $color16' >> "${1:-$PWD}/termcolors"
+  #echo 'printf $printf_template 17 $color17' >> "${1:-$PWD}/termcolors"
+  #echo 'printf $printf_template 18 $color18' >> "${1:-$PWD}/termcolors"
+  #echo 'printf $printf_template 19 $color19' >> "${1:-$PWD}/termcolors"
+  #echo 'printf $printf_template 20 $color20' >> "${1:-$PWD}/termcolors"
+  #echo 'printf $printf_template 21 $color21' >> "${1:-$PWD}/termcolors"
 
   echo 'printf $printf_template_var 10 $color_foreground' >> "${1:-$PWD}/termcolors"
   echo 'printf $printf_template_var 11 $color_background' >> "${1:-$PWD}/termcolors"
@@ -145,7 +160,6 @@ function create_term(){
 }
 
 function create_gtk(){
-
   echo '@define-color bg_color '"${themeColors[0]}"';' > "${1:-$PWD}/gtk.css"
   echo '@define-color fg_color '"${themeColors[15]}"';' >> "${1:-$PWD}/gtk.css"
   echo '@define-color base_color '"${themeColors[14]}"';' >> "${1:-$PWD}/gtk.css"
@@ -197,6 +211,7 @@ function create_gtk(){
   echo '@define-color osd_fg '"${themeColors[13]}"';' >> "${1:-$PWD}/gtk.css"
   echo '@define-color osd_bg alpha(@osd_base, 0.8);' >> "${1:-$PWD}/gtk.css"
 
+
   echo '@import url("gtk-widgets.css");' >> "${1:-$PWD}/gtk.css"
   echo '@import url("gtk-widgets-assets.css");' >> "${1:-$PWD}/gtk.css"
 
@@ -217,8 +232,36 @@ function create_gtk(){
   echo 'menu_fg_color:'"${themeColors[2]}"'"' >> "${1:-$PWD}/settings.ini"
   echo 'gtk-auto-mnemonics = 1' >> "${1:-$PWD}/settings.ini"
   echo 'gtk-visible-focus = automatic' >> "${1:-$PWD}/settings.ini"
+
+  echo 'gtk-xft-antialias=0' >> "${1:-$PWD}/settings.ini"
+  echo 'gtk-xft-hinting=0' >> "${1:-$PWD}/settings.ini"
+  echo 'gtk-xft-hintstyle="hintnone"' >> "${1:-$PWD}/settings.ini"
+  echo 'gtk-xft-rgba="rgb"' >> "${1:-$PWD}/settings.ini"
+}
+
+function create_luakit(){
+  cp ~/.config/luakit/theme.lua "${1:-$PWD}/theme.lua"
+  sed -i "s|bg.*|bg = \"${themeColors[1]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|fg.*|fg = \"${themeColors[14]}\"|" "${1:-$PWD}/theme.lua"
+
+  sed -i "s|selected_bg.*|selected_bg = \"${themeColors[0]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|selected_fg.*|selected_fg = \"${themeColors[15]}\"|" "${1:-$PWD}/theme.lua"
+
+  sed -i "s|success_fg.*|success_fg = \"${themeColors[7]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|loaded_fg.*|loaded_fg = \"${themeColors[12]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|error_fg.*|error_fg = \"${themeColors[5]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|error_bg.*|error_bg = \"${themeColors[2]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|warning_fg.*|warning_fg = \"${themeColors[9]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|warning_bg.*|warning_bg = \"${themeColors[2]}\"|" "${1:-$PWD}/theme.lua"
+  sed -i "s|ntheme.*|ntheme = \"${themeColors[7]}\"|" "${1:-$PWD}/theme.lua"
+}
+
+function create_startpage(){
+  echo '' > "${1:-$PWD}/home.html"
 }
 
 create_xres ${@}
 create_term ${@}
 create_gtk ${@}
+create_luakit ${@}
+create_startpage ${@}
