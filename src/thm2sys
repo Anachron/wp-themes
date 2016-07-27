@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Requires package pygtk
+function reload_gtk(){
+python2 - <<END
+import gtk
+
+events=gtk.gdk.Event(gtk.gdk.CLIENT_EVENT)
+data=gtk.gdk.atom_intern("_GTK_READ_RCFILES", False)
+events.data_format=8
+events.send_event=True
+events.message_type=data
+events.send_clientmessage_toall()
+END
+}
+
+function reload_termite(){
+  killall -USR1 termite
+}
+
+function reload_xrdb(){
+  xrdb -merge -I"${HOME}" ~/.Xresources
+}
+
+function reload_shell(){
+  source ~/.config/bash/colors
+}
+
+reload_gtk &
+reload_termite &
+reload_xrdb &
+reload_shell

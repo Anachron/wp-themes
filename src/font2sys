@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+function update_xres(){
+  sed -i -e "s|ont:.*|ont: xft:${NORMAL_FONT}:size=${FONT_SIZE}|" ~/.config/font/fontrc
+}
+
+function update_gtk(){
+  sed -i "s|gtk-theme-name.*|gtk-theme-name=${GTK_THEME}|" ~/.config/gtk-3.0/settings.ini
+  sed -i "s|gtk-font-name.*|gtk-font-name=${NORMAL_FONT} ${FONT_SIZE}|" ~/.config/gtk-3.0/settings.ini
+  sed -i "s|gtk-icon-theme-name.*|gtk-icon-theme-name=${ICON_THEME}|" ~/.config/gtk-3.0/settings.ini
+  sed -i "s|gtk-cursor-theme-name.*|gtk-cursor-theme-name=${CURSOR_THEME}|" ~/.config/gtk-3.0/settings.ini
+}
+
+update_xres
+#echo -e "\n"
+update_gtk

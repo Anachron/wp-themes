@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Use like: eval "$(xres2var)"
+grep -o -E 'base0[0-9|A-F] #[0-9|a-z|A-Z]*' ~/.Xresources | awk -F ' ' '{print $1"=\""$2"\""}'
